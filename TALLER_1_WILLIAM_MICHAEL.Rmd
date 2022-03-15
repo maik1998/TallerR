@@ -1,0 +1,220 @@
+---
+title: '**SIMULACIÓN Y TEORÍA DE LA DECISIÓN <br> TALLER NO. 1**'
+author: 'William Castañeda, Michael Mendoza'
+date: "Marzo 15, 2022"
+geometry: margin=1in
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br>
+<div style="text-align: justify">
+> **1. Al comparar los caracteres morfométricos de una especie de langostinos de gran importancia económica en Argentina se observaron diferencias de tamaño entre macho y hembra. En la siguiente tabla se presentan los datos (Largo total mm) de las morfometrías de machos y hembras obtenidos en diferentes recolectas (Ruiz & Mendia, 2008).**
+
+**a. Haga un histograma con cinco clases y determine la distribución de los datos para cada sexo. Explique acerca de la distribución del tamaño para cada género.**
+
+  Acerca de la distribución se puede concluir que el tamaño de las langostinas hembras es platicurtica y simetrica, mientras que el tamaño de la distribucion normal de los langostinos machos es mesocurtica y simetrica
+
+```{r, echo=FALSE}
+longHembras <- {c(183.2,	184.1,	183,	204.3,	176.5,	179,	188.3,	186.8,	202.2,	182.5,	190,	178.1,	193.2,	180.4,	184.3,	189.2,	189.1,	203.1,	166.8,	196.3,	193.3,	187.3,	185.8,	189.3,	195.5,	202.4,	210.8)};
+mediaHembras = mean(longHembras);
+desviacionEstandarHembras = sd(longHembras);
+```
+
+
+```{r, echo=FALSE}
+longMachos <- {c(140.9, 121.7, 173.8, 154.5, 109.2, 150.7, 203.3, 163.0, 137.7, 173.9, 177.4, 154.8, 177.5, 153.4, 138.7, 136.7, 165.3, 126.7, 118.9, 140.0, 192.7, 134.4, 175.0, 169.8, 153.9, 176.7, 150.0)};
+
+mediaMachos = mean(longMachos);
+desviacionEstandarMachos = sd(longMachos);
+```
+
+
+  <div style="text-align: center">
+  <br>
+```{r, echo=FALSE}
+#Para dividir la ventana de gráficos en dos secciones
+  
+par(mfrow = c(1, 2))
+
+#Para mostrar el gráfico normal
+hist(longMachos, freq=TRUE,main = "Machos", xlab = "Largo total mm", ylab = "Densidad", breaks = seq(min(longMachos), max(longMachos), length.out = 6))
+
+#Para ajustar una linea curva de forma tal que se deje entrever la distribución de los datos
+hist(longMachos, prob = TRUE,
+     main = "Con curva normal",  xlab = "Largo total mm", ylab = "Densidad", breaks = seq(min(longMachos), max(longMachos), length.out = 6))
+aux <- seq(min(longMachos), max(longMachos), length = 40)
+f <- dnorm(aux, mean = mean(longMachos), sd = sd(longMachos))
+lines(aux, f, col = "red", lwd = 2)
+
+
+```
+  </div>
+
+  <div style="text-align: center">
+  <br>
+```{r, echo=FALSE}
+par(mfrow = c(1, 2))
+#Para mostrar el gráfico normal
+hist(longHembras, freq=TRUE,main = "Hembras", xlab = "Largo total mm", ylab = "Densidad", breaks = seq(min(longHembras), max(longHembras), length.out = 6))
+
+#Para ajustar una linea curva de forma tal que se deje entrever la distribución de los datos
+hist(longHembras, prob = TRUE,
+     main = "Con curva normal",  xlab = "Largo total mm", ylab = "Densidad", breaks = seq(min(longHembras), max(longHembras), length.out = 6))
+aux <- seq(min(longHembras), max(longHembras), length = 40)
+f <- dnorm(aux, mean = mean(longHembras), sd = sd(longHembras))
+lines(aux, f, col = "red", lwd = 2)
+```
+  </div>
+  <br>
+  
+  
+
+**b. Hallar el promedio y la desviación estándar para cada sexo. ¿Qué puede concluir?**
+
+  *   **Para los machos**
+      <p>La media de las medidas morfométricas de los machos de la población, es: `r mediaMachos`.
+      
+      por lo anterior se concluye que en promedio las medidas morfometricas de los langostinos machos es `r mediaMachos` mm
+      </p>
+   <p>La desviación estándar de las medidas morfométricas de los machos de la población, es: `r desviacionEstandarMachos` 
+   
+  concluyendo que, las medidas morfométricas de los machos de la población son mas o menos de `r desviacionEstandarMachos` mm
+      </p>
+  *   **Para las hembras**
+      <p>
+      La media de las medidas morfométricas de las hembras de la población, es: `r mediaHembras` 
+      
+      por lo anterior se concluye que en promedio las medidas morfometricas de las langostinas hembras es `r mediaHembras` mm
+      </p>
+      <p>La desviación estándar de las medidas morfométricas de las hembras de la población, es: `r desviacionEstandarHembras` 
+    
+concluyendo que, las medidas morfométricas de las hembras de la población son mas o menos de `r desviacionEstandarHembras` mm
+      </p>
+
+**c. Halle un intervalo para la media del Largo total por sexo con un nivel de confianza del 97%. Provea la interpretación respectiva.**
+
+  *   **Para los machos**
+
+```{r, echo=FALSE}
+alfa = 0.03
+alfamedio = (alfa/2);
+
+#qnorm da el z
+zalphamedios = qnorm(alfamedio)
+
+a1 = mediaMachos+qnorm(alfamedio)*(desviacionEstandarMachos/sqrt(length(longMachos)))
+a2 = mediaMachos-qnorm(alfamedio)*(desviacionEstandarMachos/sqrt(length(longMachos)))
+```
+      R/. El rango de tamaños de un langostino macho con porcentaje de confianza del 97% es desde `r a1` a `r a2`
+
+  *   **Para las hembras**
+```{r, echo=FALSE}
+alfa = 0.03
+alfamedio = (alfa/2);
+
+#qnorm da el z
+zalphamedios = qnorm(alfamedio)
+
+a1H = mediaHembras+qnorm(alfamedio)*(desviacionEstandarHembras/sqrt(length(longHembras)))
+a2H = mediaHembras-qnorm(alfamedio)*(desviacionEstandarHembras/sqrt(length(longHembras)))
+```
+      R/. El rango de tamaños de una langostina hembra con porcentaje de confianza del 97% es desde `r a1H` a `r a2H`
+
+
+**d. Construya un Boxplot por sexo e interprételo.**
+<div style="text-align: center">
+```{r, echo=FALSE}
+boxplot(longMachos,longHembras,main = "Longitudes por sexo (naranja: machos; verde: hembras)", 
+     xlab = "Sexo", ylab = "Longitud", 
+     col = c("orange3", "green3"))
+
+```
+</div>
+se puede evidenciar en el grafico de bigotes y cajas que en cuanto a las hembras se tiene un limite inferior entre los 160 y 170 milimetros, que el 50% de los datos estan mas concentrados entre los 182 y 195 milimetros con una media aproximada de 189 milimetros y con un limite superior mayor de 210 y menor de 215 milimetros. En cuanto a los machos se puede notar que el limite inferior esta por debajo de 110 milimetros pero mayor a los 105 milimetros, que el 50% de los datos no estan tan concentrados como los de las hembras.
+
+**e. Hallar coeficiente de variación de ambos sexos e interpretar**
+  
+```{r, echo=FALSE}
+cvM=desviacionEstandarMachos/mediaMachos
+cvH=desviacionEstandarHembras/mediaHembras
+
+```
+  * El coeficiente de variación para los machos es de=`r cvM`
+  
+  * El coficiente de variación para las hembras es de=`r cvH`
+    
+<br>
+
+
+
+
+> **2. En un restaurante de la ciudad se sabe que la probabilidad de que se reciba un billete de 50.000 falso es de 0.015. Si se sabe que en una semana se reciben pagos con 900 billetes de 50.000, halle la probabilidad de que:**
+
+**a. A lo sumo 25 billetes sean falsos.**
+
+  R/. La probabilidad de que, a lo sumo 25 billetes sean falsos, es de: 
+
+```{r, echo=TRUE}
+pbinom(25, size = 900, prob = 0.015)
+```
+
+<br>
+
+**b. La cantidad de billetes falsos esté entre 20 y 30.**
+
+R/. La probabilidad de que la cantidad de billetes falsos esté entre 20 y 30, es de: 
+
+```{r, echo=TRUE}
+(1-pbinom(30, size = 900, prob = 0.015, lower.tail = FALSE))-pbinom(20, size = 900, prob = 0.015)
+```
+
+<br>
+
+**c.	Más de 10 sean falsos.**
+
+  R/. La probabilidad de que la cantidad de billetes falsos sea mayor que 10, es de: 
+
+```{r, echo=TRUE}
+pbinom(10, size = 900, prob = 0.015, lower.tail = FALSE)
+```
+
+
+<div style="text-align: center">
+```{r, echo=FALSE}
+
+plot(0:50, dbinom(0:50,900,0.015), col = 2, xlab="No. billetes falsos",ylab="Probabilidad",main = "Distribución Binomial (n=900; p=0.015)", pch=16)
+```
+</div>
+<br>
+
+> **3.	Según un estudio del Departamento Nacional de Estadística -DANE-, la vida media para el quinquenio de 2010 a 2015 de los habitantes de Colombia es 76 años, con una varianza de 25. Se pretende hacer un estudio con el objetivo de extrapolar los resultados anteriores a una pequeña ciudad de 100.000 habitantes, considerando que el tiempo de sobrevida es normal.**
+
+  **a. ¿Cuántos de los habitantes de la pequeña ciudad superarán previsiblemente los 92 años?**
+    La cantidad de habitantes de la pequeña ciudad superarán previsiblemente los 92 años, es de: 
+```{r, echo=TRUE}
+cantidadHabitantesSup = pnorm(92,76,25, lower.tail = FALSE) * 100000;cantidadHabitantesSup
+```
+
+<br>
+
+  **b. ¿Cuántos vivirán menos de 55 años o más de 75 años?**
+    La cantidad de habitantes que vivirán menos de 55 años o más de 75 años, es de: 
+```{r, echo=TRUE}
+cantidadHabBuscada = (pnorm(55,76,25) + pnorm(75,76,25, lower.tail = FALSE)) * 100000; cantidadHabBuscada
+```
+
+<div style="text-align: center">
+```{r, echo=FALSE}
+
+plot(seq(35,120,by=0.3),dnorm(seq(35,120,by=0.3),76,25), type="l",xlab="", ylab="Probabilidad",main = "Distribución Normal ("~miu~"=76" ~sd~"=25)",pch=16)
+
+```
+</div>
+</div>
